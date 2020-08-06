@@ -2,7 +2,7 @@ import express from 'express';
 
 const app = express();
 
-app.get('/users',(request, response) => {
+app.get('/',(request, response) => {
     return response.json( 'Hello World' );
 }),
 
