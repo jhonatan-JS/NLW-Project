@@ -29,6 +29,9 @@
         "@typescript-eslint"
     ],
     "rules": {
+      "react/jsx-one-expression-per-line": "off",
+      "react/jsx-props-no-spreading": "off",
+      "no-restricted-globals": "off",
       "react/prop-types":"off",
       "react/destructuring-assignment":"off",
       "arrow-parens":"off",
