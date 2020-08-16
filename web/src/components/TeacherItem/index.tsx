@@ -4,42 +4,43 @@ import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
 
-function TeacherItem() {
-  return (
-    <article className="teacher-item">
-      <header>
-        <img
-          src="https://avatars0.githubusercontent.com/u/62979297?s=460&u=5cbe7ec6d7689ef8509b877d00333227424091ef&v=4"
-          alt="Jhonatan santos"
-        />
-        <div>
-          <strong>Jhonatan Santos</strong>
-          <span>Design</span>
-        </div>
-      </header>
+export interface Teacher {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject: string;
+    whatsapp: string;
+}
+interface TeacherItemProps {
+  teacher: Teacher;
+}
 
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => (
+  <article className="teacher-item">
+    <header>
+      <img src={teacher.avatar} alt={teacher.name} />
+      <div>
+        <strong>{teacher.name}</strong>
+        <span>{teacher.subject}</span>
+      </div>
+    </header>
+
+    <p>{teacher.bio}</p>
+
+    <footer>
       <p>
-        Entusiasta das melhores tecnologias de química avançada.
-        <br />
-        <br />
-        Apaixonado por explodir coisas em laboratório e por mudar a vida das
-        pessoas através de experiências. Mais de 200.000 pessoas já passaram por
-        uma das minhas explosões.
+        Preço/hora
+        <strong>R$ {teacher.cost}</strong>
       </p>
 
-      <footer>
-        <p>
-          Preço/hora
-          <strong>R$ 50,00</strong>
-        </p>
-
-        <button type="button">
-          <img src={whatsappIcon} alt="Whatsapp" />
-          Entrar em contato
-        </button>
-      </footer>
-    </article>
-  );
-}
+      <a href={`http://wa.me/${teacher.whatsapp}`}>
+        <img src={whatsappIcon} alt="Whatsapp" />
+        Entrar em contato
+      </a>
+    </footer>
+  </article>
+)
 
 export default TeacherItem;

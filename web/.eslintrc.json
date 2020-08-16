@@ -29,6 +29,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+      "@typescript-eslint/explicit-module-boundary-types":"off",
+      "camelcase":"off",
       "no-console":"off",
       "semi":"off",
       "object-curly-newline":"off",
