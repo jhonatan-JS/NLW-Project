@@ -8,6 +8,7 @@ import Textarea from '../../components/Textarea';
 import warningIcon from '../../assets/images/icons/warning.svg';
 
 import './styles.css';
+import api from '../../services/api';
 
 function TeacherForm() {
   const [name, setName] = useState('');
@@ -26,16 +27,34 @@ function TeacherForm() {
     setScheduleItems([...scheduleItems, { week_day: 0, from: '', to: '' }]);
   }
 
+  function setScheduleItemsValue(position: number, field: string, value: string) {
+    const updatedScheduleItems = scheduleItems.map((scheduleItem, index) => {
+      if (index === position) {
+        return { ...scheduleItem, [field]: value };
+      }
+
+      return scheduleItem;
+    })
+
+    setScheduleItems(updatedScheduleItems);
+  }
+
   function handleCreateClass(e: FormEvent) {
     e.preventDefault();
-    console.log({
+
+    api.post('classes', {
       name,
       avatar,
       whatsapp,
       bio,
       subject,
-      cost,
-    });
+      cost: Number(cost),
+      schedule: scheduleItems,
+    }).then(() => {
+      alert('Cadastro realizado com sucesso!')
+    }).catch(() => {
+      alert('Erro no cadastro!');
+    })
   }
 
   return (
@@ -113,24 +132,39 @@ function TeacherForm() {
               </button>
             </legend>
 
-            {scheduleItems.map(scheduleItem => (
+            {scheduleItems.map((scheduleItem, index) => (
               <div key={scheduleItem.week_day} className="schedule-item">
                 <Select
-                  name="subject"
-                  label="Matéria"
+                  name="week_day"
+                  label="Dia da semana"
+                  value={scheduleItem.week_day}
+                  onChange={e => setScheduleItemsValue(index, 'week_day', e.target.value)}
                   options={[
-                    { value: 'Artes', label: 'Artes' },
-                    { value: 'Biologia', label: 'Biologia' },
-                    { value: 'Ciências', label: 'Ciências' },
-                    { value: 'Educação física', label: 'Educação física' },
-                    { value: 'Física', label: 'Física' },
-                    { value: 'Geografia', label: 'Geografia' },
-                    { value: 'História', label: 'História' },
-                    { value: 'Matemática', label: 'Matemática' },
+                    { value: '0', label: 'Domingo' },
+                    { value: '1', label: 'Segunda-feira' },
+                    { value: '2', label: 'Terça-feira' },
+                    { value: '3', label: 'Quarta-feira' },
+                    { value: '4', label: 'Quinta-feira' },
+                    { value: '5', label: 'Sexta-feira' },
+                    { value: '6', label: 'Sábado' },
                   ]}
                 />
-                <Input name="from" label="Das" type="time" />
-                <Input name="to" label="Até" type="time" />
+                <Input
+                  name="from"
+                  label="Das"
+                  type="time"
+                  value={scheduleItem.from}
+                  onChange={e => setScheduleItemsValue(index, 'from', e.target.value)}
+
+                />
+                <Input
+                  name="to"
+                  label="Até"
+                  type="time"
+                  value={scheduleItem.to}
+                  onChange={e => setScheduleItemsValue(index, 'to', e.target.value)}
+
+                />
               </div>
             ))}
           </fieldset>
